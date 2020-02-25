@@ -7,20 +7,17 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.ControlPanel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.DriveTrain;
-
 
 /**
  * Add your docs here.
  */
-public class DriveArcade extends CommandBase {
-    public DriveArcade() {
-        requires(Robot.m_drivetrain);
-    }
+public class ColorSpinCommand extends CommandBase {
+    private ControlPanel colorspin;
 
-    private void requires(DriveTrain m_drivetrain) {
+    public ColorSpinCommand(ControlPanel a) {
+        colorspin = a;
     }
 
     public void initialize() {
@@ -28,20 +25,15 @@ public class DriveArcade extends CommandBase {
     }
 
     public void execute() {
-        Robot.m_drivetrain.differentialDrive.arcadeDrive(Robot.m_robotContainer.driverController.getRawAxis(1),
-                Robot.m_robotContainer.driverController.getRawAxis(0));
-        
+        this.colorspin.Target();
+        this.colorspin.Spin();
+    }
+
+    public void end(boolean interrupted) {
+
     }
 
     public boolean isFinished() {
         return false;
-    }
-
-    protected void end(){
-
-    }
-
-    protected void interrupted(){
-
     }
 }
