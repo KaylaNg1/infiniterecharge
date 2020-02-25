@@ -18,7 +18,6 @@ package frc.robot;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
 	public static final int OI_DRIVER_CONTOROLLER = 4;
 	public static final int DRIVETRAIN_LEFT_BACK_Spark = 3;
 	public static final int DRIVETRAIN_LEFT_FRONT_Spark = 2;
