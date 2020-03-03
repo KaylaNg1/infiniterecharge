@@ -10,11 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.ControlPanel;
-import frc.robot.subsystems.DriveTrain;
+//import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.ColorMatchCommand;
+import frc.robot.commands.ColorTargetCommand;
 import frc.robot.commands.ColorSpinCommand;
 
 /**
@@ -25,22 +26,25 @@ import frc.robot.commands.ColorSpinCommand;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  public DriveTrain m_drivetrain;
+  //public DriveTrain m_drivetrain;
   private ControlPanel m_controlPanel;
-  public Joystick driverController = new Joystick(Constants.OI_DRIVER_CONTOROLLER);
-  private ColorMatchCommand m_colormatchCommand;
+  public Joystick driverController;
+  private Command m_colormatchCommand;
+  private Command m_colortargetCommand;
   private Command m_colorspinCommand;
-  public Joystick m_driverController;
+  public Joystick m_operatorJoystick;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    this.m_drivetrain = new DriveTrain();
+    //this.m_drivetrain = new DriveTrain();
     this.m_controlPanel = new ControlPanel();
     this.m_colormatchCommand = new ColorMatchCommand(m_controlPanel);
-    this.m_colorspinCommand = (Command) new ColorSpinCommand(m_controlPanel);
-    this.m_driverController = new Joystick(Constants.JOYSTICK);
+    this.m_colortargetCommand = (Command) new ColorTargetCommand(m_controlPanel);
+    this.m_colorspinCommand= (Command) new ColorSpinCommand(m_controlPanel);
+    this.m_operatorJoystick = new Joystick(Constants.OPERATOR_JOYSTICK);
+    this.driverController = new Joystick(Constants.JOYSTICK);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -53,14 +57,20 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // JoystickButton wheelStop= new JoystickButton(m_driverController, 3);
-    JoystickButton wheelSpin = new JoystickButton(m_driverController, 4);
-    // wheelSpin.whileHeld(this.m_colorspinCommand);
+    JoystickButton wheelSpin = new JoystickButton(m_operatorJoystick,3); //spinning method
+    JoystickButton targetDetector = new JoystickButton(m_operatorJoystick, 4); //target method
+    //JoystickButton colorMatcher= new JoystickButton(m_operatorJoystick, 5);
+    wheelSpin.whenPressed(this.m_colorspinCommand);
+    targetDetector.whenPressed(this.m_colortargetCommand);
+    //colorMatcher.whenPressed(this.m_colormatchCommand);
+   
+
 
   }
 
-  public Command getTeleopCommand() { // no clue what to return
+  /*public Command getTeleopCommand() { // no clue what to return
     return null;
 
   }
+  */
 }

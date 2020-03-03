@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,33 +7,40 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ControlPanel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ControlPanel;
 
-/**
- * Add your docs here.
- */
 public class ColorSpinCommand extends CommandBase {
-    private ControlPanel colorspin;
+  private ControlPanel colorSpin;
 
-    public ColorSpinCommand(ControlPanel a) {
-        colorspin = a;
-    }
+  public ColorSpinCommand(ControlPanel b) {
+    colorSpin = b;
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+  }
 
-    public void initialize() {
+  // Called just before this Command runs the first time
+  public void initialize() {
+    // System.out.println("spin");
+    this.colorSpin.Spin();
 
-    }
+  }
 
-    public void execute() {
-        this.colorspin.Target();
-        this.colorspin.Spin();
-    }
+  // Called repeatedly when this Command is scheduled to run
+  public void execute() {
+  }
 
-    public void end(boolean interrupted) {
+  // Make this return true when this Command no longer needs to run execute()
+  public boolean isFinished() {
+    return false;
+  }
 
-    }
+  // Called once after isFinished returns true
+  public void end() {
+  }
 
-    public boolean isFinished() {
-        return false;
-    }
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  public void interrupted() {
+  }
 }

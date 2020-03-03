@@ -35,6 +35,8 @@ public class ControlPanel extends SubsystemBase {
   private String colorString;
   private ColorMatchResult match;
   private int targetCounter = 1;
+  private Color detectedColor;
+  //private ControlPanel b;
 
   WPI_TalonSRX controlpanelMotor;
 
@@ -47,45 +49,52 @@ public class ControlPanel extends SubsystemBase {
     controlpanelMotor = new WPI_TalonSRX(Constants.CONTROL_PANEL_MOTOR);
 
     controlpanelMotor.setInverted(true);
-    controlpanelMotor.configFactoryDefault();
+    controlpanelMotor.configFactoryDefault();//good job kayla!!!!
   }
 
-  public void Target() { // Saves closest color/target color and should be called first and only once
+  public void runMotor(){
+    
+  }
+
+  public void moveArm(){
+
+  }
+
+  public final Color Target() { // Saves closest color/target color and should be called first and only once
     Color detectedColor1 = m_colorSensor.getColor();
     ColorMatchResult target = m_colorMatcher.matchClosestColor(detectedColor1);
     int i = 0;
+    System.out.println("At target");
     while (i < targetCounter) {
       if (target.color == kBlueTarget) { // detects colors as the wheel spins only runs once
         getColorString = "blue";
         targetColor = kBlueTarget;
         i++;
-        break;
+
       } else if (target.color == kRedTarget) {
         getColorString = "red";
         targetColor = kRedTarget;
         i++;
-        break;
 
       } else if (target.color == kGreenTarget) {
         getColorString = "green";
         targetColor = kGreenTarget;
         i++;
-        break;
 
       } else if (target.color == kYellowTarget) {
         getColorString = "yellow";
         targetColor = kYellowTarget;
         i++;
-        break;
 
       }
-      System.out.println(getColorString);
-    }
+      System.out.println("Target color: " + getColorString);
 
+    }
+    return targetColor;
   }
 
   public void periodic() {
-    Color detectedColor = m_colorSensor.getColor();
+   detectedColor = m_colorSensor.getColor();
     match = m_colorMatcher.matchClosestColor(detectedColor);
 
     if (match.color == kBlueTarget) { // detects colors as the wheel spins
@@ -111,66 +120,91 @@ public class ControlPanel extends SubsystemBase {
 
   }
 
+  public String getColor(Color match) {
+    if (match == kBlueTarget) { // detects colors as the wheel spins
+      colorString = "blue";
+    } else if (match == kRedTarget) {
+      colorString = "red";
+    } else if (match == kGreenTarget) {
+      colorString = "green";
+    } else if (match == kYellowTarget) {
+      colorString = "yellow";
+    } else {
+      colorString = "unknown";
+    }
+
+    return colorString;
+  }
+
   public void Spin() { // for color spin
     int counter = 8;
-    while (counter > 0) {
-      controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
-      periodic();
+    System.out.println("Beginning spin");
+
+    //while (counter > 0) { // should only iterate 8 times
+     // Color detectedColor = m_colorSensor.getColor(); //detecting current color under sensor
+      //match = m_colorMatcher.matchClosestColor(detectedColor);
+      System.out.println("current detected color" + this.getColor(detectedColor));
+      // controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
       if (match.color == targetColor) { // detects the colors while spinning
         counter--;
+        System.out.println("counter =" + counter);
       }
+      if (counter == 0){
+        { System.out.println("Counter got to 0");
+      }
+
     }
-    controlpanelMotor.stopMotor();
+    System.out.println("done with spinning");
+    // controlpanelMotor.stopMotor();
   }
 
   public void matchColor(String color) { // for color match
+    System.out.println("At matchColor method");
+
     if (color == "green") { // want to move wheels to yellow
       if (colorString == "yellow") {
-        controlpanelMotor.stopMotor();
+        // controlpanelMotor.stopMotor();
       } else {
         while (colorString != "yellow") {
-          controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
-          periodic();
+          // controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
         }
-        controlpanelMotor.stopMotor();
+        // controlpanelMotor.stopMotor();
       }
     }
 
-    if (color == "red") {// want to move wheels to blue
+    else if (color == "red") {// want to move wheels to blue
       if (colorString == "blue") {
-        controlpanelMotor.stopMotor();
+        // controlpanelMotor.stopMotor();
       } else {
         while (colorString != "blue") {
-          controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
-          periodic();
+          // controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
         }
-        controlpanelMotor.stopMotor();
+        // controlpanelMotor.stopMotor();
       }
     }
 
-    if (color == "yellow") { // want to move wheels to green
+    else if (color == "yellow") { // want to move wheels to green
       if (colorString == "green") {
-        controlpanelMotor.stopMotor();
+        // controlpanelMotor.stopMotor();
       } else {
         while (colorString != "green") {
-          controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
-          periodic();
+          // controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
         }
-        controlpanelMotor.stopMotor();
+        // controlpanelMotor.stopMotor();
       }
     }
 
-    if (color == "blue") { // want to move wheels to red
+    else if (color == "blue") { // want to move wheels to red
       if (colorString == "red") {
-        controlpanelMotor.stopMotor();
+        // controlpanelMotor.stopMotor();
       } else {
         while (colorString != "red") {
-          controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
-          periodic();
+          // controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
         }
-        controlpanelMotor.stopMotor();
+        // controlpanelMotor.stopMotor();
 
       }
     }
+    System.out.println("done with color match method");
   }
 }
