@@ -22,25 +22,28 @@ public class ColorSpinCommand extends CommandBase {
   // Called just before this Command runs the first time
   public void initialize() {
     // System.out.println("spin");
-    this.colorSpin.Spin();
+    
 
   }
 
   // Called repeatedly when this Command is scheduled to run
   public void execute() {
+    this.colorSpin.Spin();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   public boolean isFinished() {
-    return false;
+    return (colorSpin.getCounter() == 0);
   }
 
   // Called once after isFinished returns true
-  public void end() {
+  public void end(boolean interrupted) {
+    colorSpin.controlpanelMotor.stopMotor();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   public void interrupted() {
+
   }
 }
