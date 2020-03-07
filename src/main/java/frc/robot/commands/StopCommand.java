@@ -10,37 +10,36 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ControlPanel;
 
-public class MotorSpin extends CommandBase {
+public class StopCommand extends CommandBase {
   /**
-   * Creates a new MotorSpin.
+   * Creates a new StopCommand.
    */
-  private ControlPanel motor;
-  public MotorSpin(ControlPanel b) {
+  private ControlPanel stop;
+  public StopCommand(ControlPanel b) {
+    stop=b;
     // Use addRequirements() here to declare subsystem dependencies.
-    motor=b;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    stop.Stop();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.motor.Motor();
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    motor.getMotor().stopMotor();
+    stop.Stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (motor.getCounter() == 0);
+    return false;
   }
 }

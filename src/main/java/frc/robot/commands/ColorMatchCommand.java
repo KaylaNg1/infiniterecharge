@@ -17,6 +17,7 @@ public class ColorMatchCommand extends CommandBase {
   ControlPanel colormatch;
   String color;
   String gameData;
+  char letter;
   
 
   public ColorMatchCommand(ControlPanel color) {
@@ -37,6 +38,7 @@ public class ColorMatchCommand extends CommandBase {
           break;
       }
     }
+      letter=gameData.charAt(0);
   }
 
   public void initialize() {
@@ -44,15 +46,21 @@ public class ColorMatchCommand extends CommandBase {
   }
 
   public void execute() {
-    this.colormatch.matchColor(gameData.charAt(0));
+    this.colormatch.matchColor(letter);
   }
 
-  public void end(boolean interrupted) {
+  public void interrupted() {
 
   }
 
   public boolean isFinished() {
-    return false;
+    return colormatch.getMatch();
   }
+
+  public void end(boolean interrupted) {
+    colormatch.Stop();
+
+  }
+
 
 }

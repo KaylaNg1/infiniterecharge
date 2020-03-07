@@ -18,6 +18,7 @@ import frc.robot.commands.ColorMatchCommand;
 import frc.robot.commands.ColorTargetCommand;
 import frc.robot.commands.ColorSpinCommand;
 import frc.robot.commands.MotorSpin;
+import frc.robot.commands.StopCommand;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -27,25 +28,27 @@ import frc.robot.commands.MotorSpin;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  //public DriveTrain m_drivetrain;
+  // public DriveTrain m_drivetrain;
   private ControlPanel m_controlPanel;
   public Joystick driverController;
   private Command m_colormatchCommand;
   private Command m_colortargetCommand;
   private Command m_colorspinCommand;
-  private Command m_controlarmCommand;
+  private Command m_motorspinCommand;
+  private Command m_stopCommand;
   public Joystick m_operatorJoystick;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    //this.m_drivetrain = new DriveTrain();
+    // this.m_drivetrain = new DriveTrain();
     this.m_controlPanel = new ControlPanel();
     this.m_colormatchCommand = new ColorMatchCommand(m_controlPanel);
     this.m_colortargetCommand = (Command) new ColorTargetCommand(m_controlPanel);
-    this.m_colorspinCommand= (Command) new ColorSpinCommand(m_controlPanel);
-    this.m_controlarmCommand= (Command) new MotorSpin(m_controlPanel);
+    this.m_colorspinCommand = (Command) new ColorSpinCommand(m_controlPanel);
+    this.m_motorspinCommand = (Command) new MotorSpin(m_controlPanel);
+    this.m_stopCommand = (Command) new StopCommand(m_controlPanel);
     this.m_operatorJoystick = new Joystick(Constants.OPERATOR_JOYSTICK);
     this.driverController = new Joystick(Constants.JOYSTICK);
 
@@ -60,21 +63,23 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton wheelSpin = new JoystickButton(m_operatorJoystick,3); //spinning method
-    JoystickButton targetDetector = new JoystickButton(m_operatorJoystick, 4); //target method
-    //JoystickButton colorMatcher= new JoystickButton(m_operatorJoystick, 5);
-     JoystickButton arm= new JoystickButton(m_operatorJoystick, 2);
+    JoystickButton stop= new JoystickButton(m_operatorJoystick,1); 
+    JoystickButton runMotor = new JoystickButton(m_operatorJoystick, 2);
+    JoystickButton wheelSpin = new JoystickButton(m_operatorJoystick, 3); // spinning method
+    JoystickButton targetDetector = new JoystickButton(m_operatorJoystick, 4); // target method
+    JoystickButton colorMatcher= new JoystickButton(m_operatorJoystick, 5);
+    
+    stop.whenPressed(this.m_stopCommand);
+    runMotor.whenPressed(this.m_motorspinCommand);
     wheelSpin.whenPressed(this.m_colorspinCommand);
     targetDetector.whenPressed(this.m_colortargetCommand);
-    //colorMatcher.whenPressed(this.m_colormatchCommand);
-    arm.whenPressed(this.m_controlarmCommand);
-
+    colorMatcher.whenPressed(this.m_colormatchCommand);
 
   }
 
-  /*public Command getTeleopCommand() { // no clue what to return
-    return null;
-
-  }
-  */
+  /*
+   * public Command getTeleopCommand() { // no clue what to return return null;
+   * 
+   * }
+   */
 }
