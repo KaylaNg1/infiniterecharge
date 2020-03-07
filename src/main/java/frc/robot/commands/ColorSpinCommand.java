@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ControlPanel;
 
@@ -28,6 +30,7 @@ public class ColorSpinCommand extends CommandBase {
 
   // Called repeatedly when this Command is scheduled to run
   public void execute() {
+    colorSpin.controlpanelMotor.set(ControlMode.PercentOutput, 0.18);
     this.colorSpin.Spin();
   }
 

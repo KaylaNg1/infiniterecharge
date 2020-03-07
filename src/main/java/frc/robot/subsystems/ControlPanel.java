@@ -17,6 +17,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Add your docs here.
@@ -36,8 +37,9 @@ public class ControlPanel extends SubsystemBase {
   private ColorMatchResult match;
   private int targetCounter = 1;
   private Color detectedColor;
-  private int counter = 8;
+  private int counter = 3;
   private int counter1 = 24;
+  private int changeColor=0;;
   // private ControlPanel b;
 
   public WPI_TalonSRX controlpanelMotor;
@@ -52,10 +54,6 @@ public class ControlPanel extends SubsystemBase {
 
     controlpanelMotor.setInverted(true);
     controlpanelMotor.configFactoryDefault();// good job kayla!!!!
-  }
-
-  public void runMotor() {
-
   }
 
   public void moveArm() {
@@ -141,23 +139,36 @@ public class ControlPanel extends SubsystemBase {
 
   public void Spin() { // for color spin
     System.out.println("Beginning spin");
+    Color tempColor=ColorMatch.makeColor(0, 0, 0);;
     System.out.println("current detected color " + this.getColor(detectedColor));
-    controlpanelMotor.set(ControlMode.PercentOutput, 0.18);
-    if (match.color == targetColor && counter > 0) { // detects the colors while spinning
-      counter--;
-      System.out.println("counter =" + counter);
-    } else if (counter == 0) {
-      System.out.println("Counter got to 0");
-    }
-    System.out.println("done with spinning");
+   // if (match.color == targetColor && counter > 0) { // detects the colors while spinning
+      //Timer.delay(5); //new
+//counter--;
+     // System.out.println("counter =" + counter);
+   // } else if (counter == 0) {
+//System.out.println("Counter got to 0");
+   // }
+   // System.out.println("done with spinning");
+      if(match.color!=targetColor){
+         tempColor=match.color;
+      }
+      if(tempColor!=targetColor&& match.color!=targetColor){
+        System.out.println("we have spun 1/8");
+        counter=0;
+        //counter--;
+        //Timer.delay(3);
+      }
+     // if(tempColor!=targetColor&& match.color!=targetColor){
+        //System.out.println("we have spun 1/8");
+//}
   }
 
   public void matchColor(char FMS) { // for color match
     String color = "" + FMS;
     System.out.println("At matchColor method");
     System.out.println("The FMS gave us: " + color);
-    if (color == "G") { // want to move wheels to yellow
-      if (colorString == "Y") {
+    if (color.equals("G") ) { // want to move wheels to yellow
+      if (colorString.equals("Y")) {
         // controlpanelMotor.stopMotor();
         System.out.println("We have a match!");
       } else {
@@ -167,11 +178,10 @@ public class ControlPanel extends SubsystemBase {
       // controlpanelMotor.stopMotor();
     }
 
-    else if (color == "R") {// want to move wheels to blue
-      if (colorString == "B") {
-        // controlpanelMotor.stopMotor();
+    else if (color.equals("R")) {// want to move wheels to blue
+      if (colorString.equals("B")) {
         System.out.println("We have a match!");
-      } else if (colorString != "B") {
+      } else {
         System.out.println("Currently searching for a match");
         // controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
 
@@ -183,7 +193,7 @@ public class ControlPanel extends SubsystemBase {
       if (colorString == "G") {
         // controlpanelMotor.stopMotor();
         System.out.println("We have a match!");
-      } else if (colorString != "G") {
+      } else  {
         System.out.println("Currently searching for a match");
         // controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
       }
@@ -195,7 +205,7 @@ public class ControlPanel extends SubsystemBase {
       if (colorString == "R") {
         // controlpanelMotor.stopMotor();
         System.out.println("We have a match!");
-      } else if (colorString != "R") {
+      } else {
         // controlpanelMotor.set(ControlMode.PercentOutput, -0.1);
         System.out.println("Currently searching for a match");
       }
@@ -223,4 +233,6 @@ public class ControlPanel extends SubsystemBase {
   public int getCounter1(){
     return counter1;
   }
+
+
 }

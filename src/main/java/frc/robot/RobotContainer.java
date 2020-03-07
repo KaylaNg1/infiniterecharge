@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.ColorMatchCommand;
 import frc.robot.commands.ColorTargetCommand;
 import frc.robot.commands.ColorSpinCommand;
-import frc.robot.commands.ControlArm;
+import frc.robot.commands.MotorSpin;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -45,7 +45,7 @@ public class RobotContainer {
     this.m_colormatchCommand = new ColorMatchCommand(m_controlPanel);
     this.m_colortargetCommand = (Command) new ColorTargetCommand(m_controlPanel);
     this.m_colorspinCommand= (Command) new ColorSpinCommand(m_controlPanel);
-    this.m_controlarmCommand= (Command) new ControlArm(m_controlPanel);
+    this.m_controlarmCommand= (Command) new MotorSpin(m_controlPanel);
     this.m_operatorJoystick = new Joystick(Constants.OPERATOR_JOYSTICK);
     this.driverController = new Joystick(Constants.JOYSTICK);
 
@@ -63,11 +63,11 @@ public class RobotContainer {
     JoystickButton wheelSpin = new JoystickButton(m_operatorJoystick,3); //spinning method
     JoystickButton targetDetector = new JoystickButton(m_operatorJoystick, 4); //target method
     //JoystickButton colorMatcher= new JoystickButton(m_operatorJoystick, 5);
-    //JoystickButton arm= new JoyStickButton(m_operatorJoystick, 6);
+     JoystickButton arm= new JoystickButton(m_operatorJoystick, 2);
     wheelSpin.whenPressed(this.m_colorspinCommand);
     targetDetector.whenPressed(this.m_colortargetCommand);
     //colorMatcher.whenPressed(this.m_colormatchCommand);
-    //arm.whenPressed(this.m_controlarmCommand);
+    arm.whenPressed(this.m_controlarmCommand);
 
 
   }
