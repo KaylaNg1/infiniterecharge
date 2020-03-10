@@ -63,12 +63,12 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton stop= new JoystickButton(m_operatorJoystick,1); 
+    JoystickButton stop = new JoystickButton(m_operatorJoystick, 1);
     JoystickButton runMotor = new JoystickButton(m_operatorJoystick, 2);
     JoystickButton wheelSpin = new JoystickButton(m_operatorJoystick, 3); // spinning method
     JoystickButton targetDetector = new JoystickButton(m_operatorJoystick, 4); // target method
-    JoystickButton colorMatcher= new JoystickButton(m_operatorJoystick, 5);
-    
+    JoystickButton colorMatcher = new JoystickButton(m_operatorJoystick, 5);
+
     stop.whenPressed(this.m_stopCommand);
     runMotor.whenPressed(this.m_motorspinCommand);
     wheelSpin.whenPressed(this.m_colorspinCommand);

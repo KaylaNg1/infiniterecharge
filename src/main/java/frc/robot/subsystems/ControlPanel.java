@@ -37,10 +37,14 @@ public class ControlPanel extends SubsystemBase {
   private ColorMatchResult match;
   private int targetCounter = 1;
   private Color detectedColor;
-  private int counter = 8;
+  private int counter = 4;// 8
   private int counter1 = 24;
-  //private int spinner=3;
+  // private int spinner=3;
   private boolean matchColor;
+  private boolean[] array = new boolean[16];
+  private boolean[] array1 = new boolean[16];
+  private boolean[] array2= new boolean[16];
+
   // private ControlPanel b;
 
   private WPI_TalonSRX controlpanelMotor;
@@ -61,7 +65,7 @@ public class ControlPanel extends SubsystemBase {
 
   }
 
-  public WPI_TalonSRX getMotor(){
+  public WPI_TalonSRX getMotor() {
     return controlpanelMotor;
   }
 
@@ -144,94 +148,141 @@ public class ControlPanel extends SubsystemBase {
 
   public void Spin() { // for color spin
     System.out.println("Beginning spin");
-    Color tempColor=ColorMatch.makeColor(0, 0, 0);
-    Color tempColor2=ColorMatch.makeColor(0,0,0);
-    Color tempColor3 = ColorMatch.makeColor(0,0,0);
+    Color tempColor = ColorMatch.makeColor(0, 0, 0);
+    Color tempColor2 = ColorMatch.makeColor(0, 0, 0);
+    Color tempColor3 = ColorMatch.makeColor(0, 0, 0);
+    //int i=2;
     System.out.println("current detected color " + this.getColor(detectedColor));
-    Timer.delay(12.0);
-    counter=0;
-   // if (match.color == targetColor && counter > 0) { // detects the colors while spinning
-      //Timer.delay(5); //new
-//counter--;
-     // System.out.println("counter =" + counter);
-   // } else if (counter == 0) {
-//System.out.println("Counter got to 0");
-   // }
-   // System.out.println("done with spinning");
-      /*if(match.color!=targetColor && spinner==3){
-         tempColor=match.color;
-         if(tempColor!=targetColor && match.color!=targetColor && spinner==3){
-          spinner=2; //2
-          System.out.println("we have spun 1/8");
-          counter=1;
-        } 
-      }
-      if(match.color!=targetColor && match.color!=tempColor && spinner==2){
-          tempColor2=match.color;
-          if(tempColor2!=targetColor && match.color!=targetColor && tempColor2!=tempColor&&spinner==2){
-            System.out.println("We have spun 2/8");
-            spinner=1;
-            counter=0;
-  
-        }
+     Timer.delay(12.0);
+     counter = 0;
+    // if (match.color == targetColor && counter > 0) { // detects the colors while
+    // spinning 
+    // Timer.delay(5); //new
+    // counter--;
+    // System.out.println("counter =" + counter);
+    // } else if (counter == 0) {
+    // System.out.println("Counter got to 0");
+    // }
+    // System.out.println("done with spinning");
 
-      }  
-     
-      
+    /*if (match.color == kYellowTarget) {
+      array[0] = true;
     }
-     // if(tempColor!=targetColor&& match.color!=targetColor){
-        //System.out.println("we have spun 1/8");
-        */
-}
+    if (match.color == kBlueTarget) {
+      array[1] = true;
+    }
+    if (match.color == kGreenTarget) {
+      array[2] = true;
+    }
+    if (match.color == kRedTarget) {
+      array[3] = true;
+    }
+
+    if (match.color == kYellowTarget && array[0] == true && array[1] == true && array[2] == true && array[3] == true ) {
+      array[4] = true;
+    }
+
+    if (match.color == kBlueTarget && array[0] == true && array[1] == true && array[2] == true && array[3] == true ) {
+      array[5] = true;
+    }
+
+    if (match.color == kGreenTarget && array[0] == true && array[1] == true && array[2] == true && array[3] == true) {
+      array[6] = true;
+    }
+
+    if (match.color == kRedTarget && array[0] == true && array[1] == true && array[2] == true && array[3] == true) {
+      array[7] = true;
+      counter=0;
+    }
+   
+
+
   
+
+    
+
+    /*
+     * if(match.color!=targetColor && spinner==3){ tempColor=match.color;
+     * if(tempColor!=targetColor && match.color!=targetColor && spinner==3){
+     * spinner=2; //2 System.out.println("we have spun 1/8"); counter=1; } }
+     * if(match.color!=targetColor && match.color!=tempColor && spinner==2){
+     * tempColor2=match.color; if(tempColor2!=targetColor &&
+     * match.color!=targetColor && tempColor2!=tempColor&&spinner==2){
+     * System.out.println("We have spun 2/8"); spinner=1; counter=0;
+     * 
+     * }
+     * 
+     * }
+     * 
+     * 
+     * } // if(tempColor!=targetColor&& match.color!=targetColor){
+     * //System.out.println("we have spun 1/8");
+     */
+  }
 
   public void matchColor(char FMS) { // for color match G
     String color = String.valueOf(FMS);
     System.out.println("At matchColor method");
     System.out.println("The FMS gave us: " + color);
-    
-    if (color.equals("G") ) { // want to move wheels to yellow
+
+    if (color.equals("G")) { // want to move wheels to yellow
       if (colorString.equals("yellow")) {
         System.out.println("We have a match!");
-        matchColor=true;
+        matchColor = true;
       } else {
         getMotor().set(ControlMode.PercentOutput, 0.18);
         System.out.println("Currently searching for a match");
-        matchColor=false;
+        matchColor = false;
       }
     }
 
     if (color.equals("R")) {// want to move wheels to blue
       if (colorString.equals("blue")) {
         System.out.println("We have a match!");
-        matchColor=true;
+        matchColor = true;
       } else {
         getMotor().set(ControlMode.PercentOutput, 0.18);
         System.out.println("Currently searching for a match");
-        matchColor=false;
+        matchColor = false;
       }
     }
 
     if (color.equals("Y")) { // want to move wheels to green
       if (colorString.equals("green")) {
+        if(match.confidence<97.0){
+          getMotor().set(ControlMode.PercentOutput, 0.18);
+        }
         System.out.println("We have a match!");
-        matchColor=true;
-      } else  {
+        matchColor = true;
+      } else {
         getMotor().set(ControlMode.PercentOutput, 0.18);
         System.out.println("Currently searching for a match");
-        matchColor=false;
+        matchColor = false;
       }
+
+      
+
+      /*
+       * if (color.equals("Y")) { // want to move wheels to green if
+       * (colorString.equals("green")) { if(match.confidence<95.0){
+       * getMotor().set(ControlMode.PercentOutput, 0.18); }
+       * System.out.println("We have a match!"); matchColor=true; } else {
+       * getMotor().set(ControlMode.PercentOutput, 0.18);
+       * System.out.println("Currently searching for a match"); matchColor=false; }
+       * 
+       * }
+       */
 
     }
 
     if (color.equals("B")) { // want to move wheels to red
       if (colorString.equals("red")) {
-        matchColor=true;
+        matchColor = true;
         System.out.println("We have a match!");
       } else {
         getMotor().set(ControlMode.PercentOutput, 0.18);
         System.out.println("Currently searching for a match");
-        matchColor=false;
+        matchColor = false;
       }
 
     }
@@ -242,29 +293,26 @@ public class ControlPanel extends SubsystemBase {
     return counter;
   }
 
-  public boolean getMatch(){
+  public boolean getMatch() {
     return matchColor;
   }
 
-  public void Motor(){
-  
-    if(counter1>0){
+  public void Motor() {
+
+    if (counter1 > 0) {
       controlpanelMotor.set(ControlMode.PercentOutput, 0.18);
       counter1--;
-    }
-    else{
+    } else {
       System.out.println("done");
     }
   }
 
-  public int getCounter1(){
+  public int getCounter1() {
     return counter1;
   }
 
-  public void Stop(){ //in case of emergencies
+  public void Stop() { // in case of emergencies
     controlpanelMotor.stopMotor();
   }
 
-  
- 
 }
